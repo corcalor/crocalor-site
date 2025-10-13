@@ -35,7 +35,7 @@ const CONFIG = {
 
 const en = {
     nav_market: "主页",
-    nav_memes: "社区创作",
+    nav_memes: "社区创作MEMES",
     nav_factory: "表情包工厂",
     nav_about: "关于炙烫鳄",
     cta_buy: "购买炙烫鳄用four.meme",
@@ -48,13 +48,16 @@ const en = {
     section_factory: "表情包工厂",
     section_about: "关于炙烫鳄",
     about_body:
-        "炙烫鳄是一个由社区发起、拥抱互联网玩梗文化的加密项目。灵感源自宝可梦世界中的炙烫鳄(火系中期进化），我们把 “热度、节奏、进化”的精神带到链上：不装深奥，用最有趣的方式把大家聚在一起创作、分享、玩梗。",
+        "炙烫鳄是一个由社区发起、拥抱互联网玩梗文化的加密项目。我们把 “热度、节奏、进化”的精神带到链上：不装深奥，用最有趣的方式把大家聚在一起创作、分享、玩梗。",
     section_about_more: "为什么炙烫鳄",
     about_more_body:
         "热度象征：头顶火焰、节奏感拉满的形象，天然适配“热梗＋热浪”的社区气质。进化中的能量：处于成长阶段，不完美但有冲劲，和迷因从小火到大火的过程同频共振。共创友好：易于二次创作与再设计，适合建立社区梗库与视觉体系。",
     factory_hint: "快速创建自己的炙烫鳄表情包",
     footer_rights: "Made with ❤️ by the Crocalor community.",
 };
+
+// ✅ Shared CTA button style (matches the main buy button)
+const BTN = "px-5 py-3 rounded-xl bg-[#dd5f48] text-white text-sm font-semibold hover:opacity-90";
 
 // === MemeFactory: upload base image, add preloaded assets (stickers), export PNG ===
 function MemeFactory({ assets }: { assets: string[] }) {
@@ -716,8 +719,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                             <button
                                 key={L.id}
                                 onClick={() => setSelectedId(L.id)}
-                                className={`w-full text-left text-sm px-3 py-2 rounded-lg border ${selectedId === L.id ? "border-[#dd5f48] bg-[#dd5f48]/10" : "border-zinc-300"
-                                    }`}
+                                className={`w-full text-left text-sm px-3 py-2 rounded-lg border ${selectedId === L.id ? "border-[#dd5f48] bg-[#dd5f48]/10" : "border-zinc-300"}`}
                             >
                                 {L.src.split("/").pop()} (x:{Math.round(L.x)}, y:{Math.round(L.y)}, s:
                                 {L.scale.toFixed(2)})
@@ -874,10 +876,17 @@ export default function CrocalorLanding() {
                             {CONFIG.token.ticker}
                         </span>
                     </div>
-                    <nav className="hidden sm:flex items-center gap-6 text-sm">
-                        <Link href="/memes">{en.nav_memes}</Link>
-                        <a href="#about">{en.nav_about}</a>
-                        <a href="#factory">{en.nav_factory}</a>
+                    {/* 🔴 Header nav items now styled as CTA buttons */}
+                    <nav className="hidden sm:flex items-center gap-3">
+                        <Link href="/memes" className={BTN} aria-label={en.nav_memes}>
+                            {en.nav_memes}
+                        </Link>
+                        <a href="#about" className={BTN} aria-label={en.nav_about}>
+                            {en.nav_about}
+                        </a>
+                        <a href="#factory" className={BTN} aria-label={en.nav_factory}>
+                            {en.nav_factory}
+                        </a>
                     </nav>
                 </div>
             </header>
@@ -913,7 +922,7 @@ export default function CrocalorLanding() {
                                     href="https://four.meme/coin/PLACEHOLDER"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="px-5 py-3 rounded-xl bg-[#dd5f48] text-white text-sm font-semibold hover:opacity-90"
+                                    className={BTN}
                                 >
                                     {en.cta_buy}
                                 </a>
