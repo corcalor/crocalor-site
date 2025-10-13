@@ -309,7 +309,7 @@ function MemeFactory({ assets }) {
             const s = Math.sin((-L.rot * Math.PI) / 180), c = Math.cos((-L.rot * Math.PI) / 180);
             const dx = pt.x - L.x, dy = pt.y - L.y;
             let rx = dx * c - dy * s;
-            let ry = dx * s + dy * c;
+            const ry = dx * s + dy * c;
             // account for horizontal flip when hit-testing (mirror local X)
             if (L.flipX) rx = -rx;
             if (rx >= -w / 2 && rx <= w / 2 && ry >= -h / 2 && ry <= h / 2) {
@@ -549,7 +549,7 @@ function MemeFactory({ assets }) {
                 // Simple fallback if aux missing (should rarely run)
                 const sL = Math.sin((-state.startLayer.rot * Math.PI) / 180), cL = Math.cos((-state.startLayer.rot * Math.PI) / 180);
                 let rdx = dx * cL - dy * sL;
-                let rdy = dx * sL + dy * cL;
+                const rdy = dx * sL + dy * cL;
                 if (state.startLayer.flipX) rdx = -rdx;
                 const im = getImage(L.src);
                 const baseW = im.naturalWidth || im.width || 256;
@@ -866,21 +866,18 @@ export default function CrocalorLanding() {
                 </ol>
                 <button
                     onClick={async () => {
-                        // @ts-ignore
-                        if (!window.ethereum) return alert("MetaMask not found");
+                        const eth = (window as any).ethereum;
+                        if (!eth) { alert("MetaMask not found"); return; }
                         try {
-                            // @ts-ignore
-                            await window.ethereum.request({
+                            await eth.request({
                                 method: "wallet_addEthereumChain",
-                                params: [
-                                    {
-                                        chainId: "0x38",
-                                        chainName: "BNB Smart Chain",
-                                        nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
-                                        rpcUrls: ["https://bsc-dataseed.binance.org"],
-                                        blockExplorerUrls: ["https://bscscan.com"],
-                                    },
-                                ],
+                                params: [{
+                                    chainId: "0x38",
+                                    chainName: "BNB Smart Chain",
+                                    nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+                                    rpcUrls: ["https://bsc-dataseed.binance.org"],
+                                    blockExplorerUrls: ["https://bscscan.com"],
+                                }],
                             });
                         } catch (e) {
                             console.error(e);
@@ -893,11 +890,10 @@ export default function CrocalorLanding() {
                 </button>
                 <button
                     onClick={async () => {
-                        // @ts-ignore
-                        if (!window.ethereum) return alert("MetaMask not found");
+                        const eth = (window as any).ethereum;
+                        if (!eth) { alert("MetaMask not found"); return; }
                         try {
-                            // @ts-ignore
-                            await window.ethereum.request({
+                            await eth.request({
                                 method: "wallet_watchAsset",
                                 params: {
                                     type: "ERC20",
