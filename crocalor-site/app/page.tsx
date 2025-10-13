@@ -16,6 +16,7 @@ const CONFIG = {
     socials: [
         { label: "X", href: "https://x.com/crocalor" },
         { label: "Four", href: "https://four.meme/coin/crocalor" },
+        { label: "Telegram", href: "https://t.me/+UThyxyQgyAA3ZWFl" },
     ],
     hero: { videoUrl: "", poster: "/assets/crocalor-hero.png" },
     assets: [
@@ -925,6 +926,8 @@ export default function CrocalorLanding() {
                                     <a
                                         key={s.label}
                                         href={s.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         className="px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-sm"
                                     >
                                         {s.label}
