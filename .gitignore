@@ -1,1 +1,5 @@
 -e "node_modules\n.next\n.env*\n.DS_Store" 
+node_modules
+.next
+.env*
+.DS_Store
