@@ -10,12 +10,12 @@ const CONFIG = {
     token: {
         name: "炙烫鳄",
         ticker: "$CROC",
-        contract: "YOUR_CONTRACT_ADDRESS",
+        contract: "0x463eda547205c479001c2efd974c4c431d9c4444",
         chain: "BSC",
     },
     socials: [
         { label: "X", href: "https://x.com/crocalor" },
-        { label: "Four", href: "https://four.meme/coin/crocalor" },
+        { label: "Four", href: "https://four.meme/token/0x463eda547205c479001c2efd974c4c431d9c4444" },
         { label: "Telegram", href: "https://t.me/+UThyxyQgyAA3ZWFl" },
     ],
     hero: { videoUrl: "", poster: "/assets/crocalor-hero.png" },
