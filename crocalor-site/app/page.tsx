@@ -844,6 +844,30 @@ export default function CrocalorLanding() {
     const [lbOpen, setLbOpen] = useState(false);
     const [lbIndex, setLbIndex] = useState(0);
     const images = CONFIG.gallery && CONFIG.gallery.length > 0 ? CONFIG.gallery : [];
+    const [copied, setCopied] = useState(false);
+
+async function copyCA() {
+    const text = CONFIG.token.contract?.trim() || "0x463eda547205c479001c2efd974c4c431d9c4444";
+  if (!text) return;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+  } catch {
+    // Fallback for older browsers / non-HTTPS
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); setCopied(true); } finally {
+      document.body.removeChild(ta);
+    }
+  } finally {
+    setTimeout(() => setCopied(false), 1500);
+  }
+}
 
     // keyboard controls for lightbox
     useEffect(() => {
@@ -919,16 +943,21 @@ export default function CrocalorLanding() {
                             <p className="text-lg text-zinc-700 dark:text-zinc-300">{en.hero_tagline}</p>
                             <div className="flex flex-col sm:flex-row gap-3">
                                 <a
-                                    href="https://four.meme/coin/PLACEHOLDER"
+                                    href="https://four.meme/token/0x463eda547205c479001c2efd974c4c431d9c4444"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={BTN}
                                 >
                                     {en.cta_buy}
                                 </a>
-                                <button className="px-5 py-3 rounded-xl bg-[#fceb96] text-black text-sm font-semibold hover:opacity-90">
-                                    {en.cta_copy}
+                                <button
+                                    onClick={copyCA}
+                                    className="px-5 py-3 rounded-xl bg-[#fceb96] text-black text-sm font-semibold hover:opacity-90"
+                                    aria-label={copied ? en.copied : en.cta_copy}
+                                >
+                                    {copied ? en.copied : en.cta_copy}
                                 </button>
+
                             </div>
                             <div className="flex flex-wrap gap-3 pt-2">
                                 {CONFIG.socials.map((s) => (
@@ -989,11 +1018,11 @@ export default function CrocalorLanding() {
                         4) 打开网址{" "}
                         <a
                             className="underline"
-                            href="https://four.meme/coin/PLACEHOLDER"
+                            href="https://four.meme/token/0x463eda547205c479001c2efd974c4c431d9c4444"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            four.meme/coin/PLACEHOLDER
+                            https://four.meme/token/0x463eda547205c479001c2efd974c4c431d9c4444
                         </a>
                         .
                     </li>
@@ -1046,7 +1075,7 @@ export default function CrocalorLanding() {
                                 params: {
                                     type: "ERC20",
                                     options: {
-                                        address: CONFIG.token.contract || "0xPLACEHOLDERCONTRACT",
+                                        address: CONFIG.token.contract || "0x463eda547205c479001c2efd974c4c431d9c4444",
                                         symbol: "CROC",
                                         decimals: 18,
                                         image: "/crocalor-32.png",
