@@ -10,12 +10,12 @@ const CONFIG = {
     token: {
         name: "炙烫鳄",
         ticker: "$CROC",
-        contract: "PLACEHOLDER",
+        contract: "0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444",
         chain: "BSC",
     },
     socials: [
         { label: "X", href: "https://x.com/crocalor" },
-        { label: "Four", href: "https://four.meme/token/placeholder" },
+        { label: "Four", href: "https://four.meme/token/0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444" },
         { label: "Telegram", href: "https://t.me/+UThyxyQgyAA3ZWFl" },
     ],
     hero: { videoUrl: "", poster: "/assets/crocalor-hero.png" },
@@ -847,7 +847,7 @@ export default function CrocalorLanding() {
     const [copied, setCopied] = useState(false);
 
 async function copyCA() {
-    const text = CONFIG.token.contract?.trim() || "placeholder";
+    const text = CONFIG.token.contract?.trim() || "0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444";
   if (!text) return;
 
   try {
@@ -943,7 +943,7 @@ async function copyCA() {
                             <p className="text-lg text-zinc-700 dark:text-zinc-300">{en.hero_tagline}</p>
                             <div className="flex flex-col sm:flex-row gap-3">
                                 <a
-                                    href="https://four.meme/token/placeholder"
+                                    href="https://four.meme/token/0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={BTN}
@@ -1018,11 +1018,11 @@ async function copyCA() {
                         4) 打开网址{" "}
                         <a
                             className="underline"
-                            href="https://four.meme/token/placeholder"
+                            href="https://four.meme/token/0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            https://four.meme/token/placeholder
+                            https://four.meme/token/0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444
                         </a>
                         .
                     </li>
@@ -1075,7 +1075,7 @@ async function copyCA() {
                                 params: {
                                     type: "ERC20",
                                     options: {
-                                        address: CONFIG.token.contract || "placeholder",
+                                        address: CONFIG.token.contract || "0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444",
                                         symbol: "CROC",
                                         decimals: 18,
                                         image: "/crocalor-32.png",
