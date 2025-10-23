@@ -8,14 +8,14 @@ import Link from "next/link";
 
 const CONFIG = {
     token: {
-        name: "炙烫鳄",
+        name: "Crocalor",
         ticker: "$CROC",
-        contract: "0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444",
-        chain: "BSC",
+        contract: "placeholder",
+        chain: "Solana",
     },
     socials: [
         { label: "X", href: "https://x.com/crocalor" },
-        { label: "Four", href: "https://four.meme/token/0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444" },
+        { label: "PumpFun", href: "https://pump.fun/coin/placeholder" },
         { label: "Telegram", href: "https://t.me/+UThyxyQgyAA3ZWFl" },
     ],
     hero: { videoUrl: "", poster: "/assets/crocalor-hero.png" },
@@ -33,31 +33,35 @@ const CONFIG = {
     gallery: ["/memes/meme4.png", "/memes/meme3.png", "/memes/meme2.png", "/memes/meme1.png"],
 };
 
-const en = {
-    nav_market: "主页",
-    nav_memes: "社区创作MEMES",
-    nav_factory: "表情包工厂",
-    nav_about: "关于炙烫鳄",
-    cta_buy: "购买炙烫鳄用four.meme",
-    cta_copy: "点击复制CA",
-    copied: "合约已复制!",
-    hero_title: "炙烫鳄 — 火鳄梗王",
+// Single source of truth for the market URL
+const PUMP_URL = `https://pump.fun/coin/${CONFIG.token.contract}`;
+
+const he = {
+    nav_market: "דף הבית",
+    nav_memes: "MEMES של הקהילה",
+    nav_factory: "מפעל הסטיקרים",
+    nav_about: "על Crocalor",
+    cta_buy: "קנו את Crocalor ב-pump.fun",
+    cta_copy: "העתק כתובת ה-CA",
+    copied: "הכתובת הועתקה!",
+    hero_title: "Crocalor — מלך הממים הלוהט",
     hero_tagline:
-        "凭借炽热的火焰能量与满溢的生命力,炙烫鳄想要拿下BSC，让大家看看谁才是老大。",
-    section_memes: "社区创作",
-    section_factory: "表情包工厂",
-    section_about: "关于炙烫鳄",
+        "בכוח האש הלוהט ובאנרגיית חיים שופעת, Crocalor בא לכבוש את Solana ולהראות לכולם מי הבוס.",
+    section_memes: "יצירות הקהילה",
+    section_factory: "מפעל הסטיקרים",
+    section_about: "על Crocalor",
     about_body:
-        "炙烫鳄是一个由社区发起、拥抱互联网玩梗文化的加密项目。我们把 “热度、节奏、进化”的精神带到链上：不装深奥，用最有趣的方式把大家聚在一起创作、分享、玩梗。",
-    section_about_more: "为什么炙烫鳄",
+        "Crocalor הוא פרויקט קריפטו קהילתי שמאמץ את תרבות הממים של האינטרנט. אנחנו מביאים לשרשרת את רוח ה'חום, הקצב והאבולוציה': בלי פלצנות — בדרך הכי כיפית שמאחדת אנשים ליצור, לשתף ולשחק בממים.",
+    section_about_more: "למה Crocalor",
     about_more_body:
-        "热度象征：头顶火焰、节奏感拉满的形象，天然适配“热梗＋热浪”的社区气质。进化中的能量：处于成长阶段，不完美但有冲劲，和迷因从小火到大火的过程同频共振。共创友好：易于二次创作与再设计，适合建立社区梗库与视觉体系。",
-    factory_hint: "快速创建自己的炙烫鳄表情包",
-    footer_rights: "Made with ❤️ by the Crocalor community.",
+        "סמל של חום: להבה מעל הראש ומקצב גבוה — התאמה טבעית לאופי של 'מם לוהט + גל חום'. אנרגיה מתפתחת: בשלב צמיחה, לא מושלם אבל חדור דחף — בדיוק כמו המסלול שבו מם קטן הופך לאש גדולה. ידידותי לשיתופי-יצירה: קל לעיבוד מחודש ולעיצוב, מתאים לבניית ספריית ממים ומערכת חזותית קהילתית.",
+    factory_hint: "צרו במהירות סטיקרים משלכם של Crocalor",
+    footer_rights: "נוצר באהבה על ידי קהילת Crocalor.",
 };
 
 // ✅ Shared CTA button style (matches the main buy button)
-const BTN = "px-5 py-3 rounded-xl bg-[#dd5f48] text-white text-sm font-semibold hover:opacity-90";
+const BTN =
+    "px-5 py-3 rounded-xl bg-[#dd5f48] text-white text-sm font-semibold hover:opacity-90";
 
 // === MemeFactory: upload base image, add preloaded assets (stickers), export PNG ===
 function MemeFactory({ assets }: { assets: string[] }) {
@@ -122,8 +126,9 @@ function MemeFactory({ assets }: { assets: string[] }) {
             { x: -w / 2, y: -h / 2 },
             { x: w / 2, y: -h / 2 },
         ];
-        const rot = (L.rot || 0) * Math.PI / 180;
-        const cos = Math.cos(rot), sin = Math.sin(rot);
+        const rot = ((L.rot || 0) * Math.PI) / 180;
+        const cos = Math.cos(rot),
+            sin = Math.sin(rot);
         let best = corners[0];
         let bestScore = -Infinity;
         for (const p of corners) {
@@ -241,7 +246,8 @@ function MemeFactory({ assets }: { assets: string[] }) {
             ctx.font = `900 ${px}px Impact, Arial Black, system-ui`;
             const metrics = ctx.measureText(String(text).toUpperCase());
             const pad = 6;
-            const w = metrics.width, h = px;
+            const w = metrics.width,
+                h = px;
             const left = x - w / 2 - pad;
             const top = y - h / 2 - pad;
             ctx.strokeStyle = "#dd5f48";
@@ -304,7 +310,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
             setBaseImg(img);
             draw();
         };
-        img.onerror = () => alert("Could not load that image. Try another file.");
+        img.onerror = () => alert("לא ניתן לטעון את התמונה. נסו קובץ אחר.");
     }
 
     function addSticker(src: string) {
@@ -351,15 +357,16 @@ function MemeFactory({ assets }: { assets: string[] }) {
 
         {
             const br = pickBRLocalCorner(L, w, h);
-            const rot = (L.rot || 0) * Math.PI / 180;
+            const rot = ((L.rot || 0) * Math.PI) / 180;
             const cosR = Math.cos(rot),
                 sinR = Math.sin(rot);
             const lx = L.flipX ? -br.x : br.x;
             const ly = br.y;
-            const hx = L.x + (lx * cosR - ly * sinR);
-            const hy = L.y + (lx * sinR + ly * cosR);
+            const hx = lx * cosR - ly * sinR;
+            const hy = lx * sinR + ly * cosR;
+            const handleLen = Math.hypot(hx, hy) || 1;
             const R = Math.max(HANDLE_SIZE / 2 + HANDLE_HIT_PAD, 28);
-            const inScaleHandle = Math.hypot(pt.x - hx, pt.y - hy) <= R;
+            const inScaleHandle = Math.hypot(pt.x - (L.x + hx), pt.y - (L.y + hy)) <= R;
             if (inScaleHandle) return "scale";
         }
 
@@ -425,7 +432,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                             const h0 = baseH * info.L.scale;
 
                             const br = pickBRLocalCorner(info.L, w0, h0);
-                            const rot = (info.L.rot || 0) * Math.PI / 180;
+                            const rot = ((info.L.rot || 0) * Math.PI) / 180;
                             const cosR = Math.cos(rot),
                                 sinR = Math.sin(rot);
                             const lx = info.L.flipX ? -br.x : br.x;
@@ -632,9 +639,9 @@ function MemeFactory({ assets }: { assets: string[] }) {
                             onClick={() => fileInputRef.current?.click()}
                             className="px-4 py-2 rounded-xl bg-[#dd5f48] text-white hover:opacity-90 text-sm"
                         >
-                            上传图片
+                            העלה תמונה
                         </button>
-                        {baseImg ? <span className="text-xs text-zinc-500">图片加载成功</span> : null}
+                        {baseImg ? <span className="text-xs text-zinc-500">התמונה נטענה בהצלחה</span> : null}
                     </div>
 
                     {/* Asset buttons (Next/Image to satisfy eslint) */}
@@ -664,27 +671,27 @@ function MemeFactory({ assets }: { assets: string[] }) {
                 <div className="grid gap-3">
                     <div className="grid grid-cols-2 gap-3">
                         <label className="block">
-                            <span className="text-sm">上文</span>
+                            <span className="text-sm">טקסט עליון</span>
                             <input
                                 value={topText}
                                 onChange={(e) => setTopText(e.target.value)}
                                 className="mt-1 w-full rounded-lg border border-zinc-300 bg-transparent px-3 py-2"
-                                placeholder="炙烫鳄"
+                                placeholder="Crocalor"
                             />
                         </label>
                         <label className="block">
-                            <span className="text-sm">下文</span>
+                            <span className="text-sm">טקסט תחתון</span>
                             <input
                                 value={bottomText}
                                 onChange={(e) => setBottomText(e.target.value)}
                                 className="mt-1 w-full rounded-lg border border-zinc-300 bg-transparent px-3 py-2"
-                                placeholder="火力全开"
+                                placeholder="אש על מקסימום"
                             />
                         </label>
                     </div>
                     <div className="grid md:grid-cols-2 gap-3">
                         <label className="text-sm">
-                            上文字体大小 ({topFontPx}px)
+                            גודל גופן עליון ({topFontPx}px)
                             <input
                                 type="range"
                                 min="12"
@@ -696,7 +703,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                             />
                         </label>
                         <label className="text-sm">
-                            下文字体大小 ({bottomFontPx}px)
+                            גודל גופן תחתון ({bottomFontPx}px)
                             <input
                                 type="range"
                                 min="12"
@@ -708,18 +715,19 @@ function MemeFactory({ assets }: { assets: string[] }) {
                             />
                         </label>
                     </div>
-                    <p className="text-xs text-zinc-500">💡 小提示:可直接在画布上拖动文字</p>
+                    <p className="text-xs text-zinc-500">💡 טיפ: אפשר לגרור את הטקסט ישירות על הקנבס</p>
                 </div>
 
                 {/* Layer list & controls */}
                 <div className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                    <p className="text-sm mb-2">表情包</p>
+                    <p className="text-sm mb-2">שכבות</p>
                     <div className="space-y-2 max-h-40 overflow-auto">
                         {layers.map((L) => (
                             <button
                                 key={L.id}
                                 onClick={() => setSelectedId(L.id)}
-                                className={`w-full text-left text-sm px-3 py-2 rounded-lg border ${selectedId === L.id ? "border-[#dd5f48] bg-[#dd5f48]/10" : "border-zinc-300"}`}
+                                className={`w-full text-left text-sm px-3 py-2 rounded-lg border ${selectedId === L.id ? "border-[#dd5f48] bg-[#dd5f48]/10" : "border-zinc-300"
+                                    }`}
                             >
                                 {L.src.split("/").pop()} (x:{Math.round(L.x)}, y:{Math.round(L.y)}, s:
                                 {L.scale.toFixed(2)})
@@ -751,7 +759,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                                 </label>
                             </div>
                             <label className="text-sm">
-                                缩放
+                                קנה מידה
                                 <input
                                     type="range"
                                     min="0.1"
@@ -762,7 +770,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                                 />
                             </label>
                             <label className="text-sm">
-                                旋转
+                                סיבוב
                                 <input
                                     type="range"
                                     min="-180"
@@ -780,13 +788,13 @@ function MemeFactory({ assets }: { assets: string[] }) {
                                 }}
                                 className="mt-1 px-3 py-2 rounded-lg border border-zinc-300 hover:bg-zinc-50 text-sm"
                             >
-                                水平翻转
+                                היפוך אופקי
                             </button>
                             <button
                                 onClick={removeSelected}
                                 className="mt-1 px-3 py-2 rounded-lg border border-zinc-300 hover:bg-zinc-50 text-sm"
                             >
-                                删除选中项
+                                מחק פריט נבחר
                             </button>
                         </div>
                     )}
@@ -802,7 +810,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                         }}
                         className="px-4 py-2 rounded-xl border border-zinc-300 hover:bg-zinc-50"
                     >
-                        清空
+                        נקה
                     </button>
                     <button
                         onClick={() => {
@@ -815,7 +823,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                         }}
                         className="px-4 py-2 rounded-xl bg-[#dd5f48] text-white hover:opacity-90"
                     >
-                        下载 PNG
+                        הורד PNG
                     </button>
                 </div>
             </div>
@@ -844,30 +852,35 @@ export default function CrocalorLanding() {
     const [lbOpen, setLbOpen] = useState(false);
     const [lbIndex, setLbIndex] = useState(0);
     const images = CONFIG.gallery && CONFIG.gallery.length > 0 ? CONFIG.gallery : [];
+
+    // ✅ Copy CA state + handler
     const [copied, setCopied] = useState(false);
-
-async function copyCA() {
-    const text = CONFIG.token.contract?.trim() || "0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444";
-  if (!text) return;
-
-  try {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-  } catch {
-    // Fallback for older browsers / non-HTTPS
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.position = "fixed";
-    ta.style.opacity = "0";
-    document.body.appendChild(ta);
-    ta.select();
-    try { document.execCommand("copy"); setCopied(true); } finally {
-      document.body.removeChild(ta);
+    async function copyCA() {
+        const text = CONFIG.token.contract?.trim();
+        if (!text || text.toLowerCase() === "placeholder") {
+            alert("כתובת ה-Mint עדיין לא הוגדרה. נסו מאוחר יותר.");
+            return;
+        }
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopied(true);
+        } catch {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.opacity = "0";
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand("copy");
+                setCopied(true);
+            } finally {
+                document.body.removeChild(ta);
+            }
+        } finally {
+            setTimeout(() => setCopied(false), 1500);
+        }
     }
-  } finally {
-    setTimeout(() => setCopied(false), 1500);
-  }
-}
 
     // keyboard controls for lightbox
     useEffect(() => {
@@ -882,7 +895,11 @@ async function copyCA() {
     }, [lbOpen, images.length]);
 
     return (
-        <div className="min-h-screen bg-[radial-gradient(60%_40%_at_50%_0%,rgba(213,83,66,0.20),transparent),linear-gradient(to_bottom,white,white)] dark:bg-[radial-gradient(60%_40%_at_50%_0%,rgba(213,83,66,0.10),transparent),linear-gradient(to_bottom,#0a0a0a,#0a0a0a)] text-zinc-900 dark:text-zinc-100">
+        <div
+            dir="rtl"
+            lang="he"
+            className="min-h-screen bg-[radial-gradient(60%_40%_at_50%_0%,rgba(213,83,66,0.20),transparent),linear-gradient(to_bottom,white,white)] dark:bg-[radial-gradient(60%_40%_at_50%_0%,rgba(213,83,66,0.10),transparent),linear-gradient(to_bottom,#0a0a0a,#0a0a0a)] text-zinc-900 dark:text-zinc-100"
+        >
             <header className="sticky top-0 z-30 backdrop-blur bg-white/70 dark:bg-zinc-900/60 border-b border-zinc-200/70 dark:border-zinc-800/70">
                 <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -902,14 +919,14 @@ async function copyCA() {
                     </div>
                     {/* 🔴 Header nav items now styled as CTA buttons */}
                     <nav className="hidden sm:flex items-center gap-3">
-                        <Link href="/memes" className={BTN} aria-label={en.nav_memes}>
-                            {en.nav_memes}
+                        <Link href="/memes" className={BTN} aria-label={he.nav_memes}>
+                            {he.nav_memes}
                         </Link>
-                        <a href="#about" className={BTN} aria-label={en.nav_about}>
-                            {en.nav_about}
+                        <a href="#about" className={BTN} aria-label={he.nav_about}>
+                            {he.nav_about}
                         </a>
-                        <a href="#factory" className={BTN} aria-label={en.nav_factory}>
-                            {en.nav_factory}
+                        <a href="#factory" className={BTN} aria-label={he.nav_factory}>
+                            {he.nav_factory}
                         </a>
                     </nav>
                 </div>
@@ -922,7 +939,7 @@ async function copyCA() {
                         <div className="order-first md:order-none">
                             <NextImage
                                 src={CONFIG.hero.poster || "/assets/crocalor-hero.png"}
-                                alt="炙烫鳄 Crocalor"
+                                alt="Crocalor"
                                 width={1200}
                                 height={900}
                                 sizes="(min-width: 1024px) 720px, (min-width: 768px) 600px, 100vw"
@@ -939,25 +956,19 @@ async function copyCA() {
                                     {CONFIG.token.ticker}
                                 </span>
                             </div>
-                            <h1 className="text-4xl sm:text-6xl font-extrabold leading-tight">{en.hero_title}</h1>
-                            <p className="text-lg text-zinc-700 dark:text-zinc-300">{en.hero_tagline}</p>
-                            <div className="flex flex-col sm:flex-row gap-3">
-                                <a
-                                    href="https://four.meme/token/0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={BTN}
-                                >
-                                    {en.cta_buy}
+                            <h1 className="text-4xl sm:text-6xl font-extrabold leading-tight">{he.hero_title}</h1>
+                            <p className="text-lg text-zinc-700 dark:text-zinc-300">{he.hero_tagline}</p>
+                            <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                                <a href={PUMP_URL} target="_blank" rel="noopener noreferrer" className={BTN}>
+                                    {he.cta_buy}
                                 </a>
                                 <button
                                     onClick={copyCA}
                                     className="px-5 py-3 rounded-xl bg-[#fceb96] text-black text-sm font-semibold hover:opacity-90"
-                                    aria-label={copied ? en.copied : en.cta_copy}
+                                    aria-label={copied ? he.copied : he.cta_copy}
                                 >
-                                    {copied ? en.copied : en.cta_copy}
+                                    {copied ? he.copied : he.cta_copy}
                                 </button>
-
                             </div>
                             <div className="flex flex-wrap gap-3 pt-2">
                                 {CONFIG.socials.map((s) => (
@@ -978,123 +989,53 @@ async function copyCA() {
             </section>
 
             <section id="about" className="py-16 sm:py-24 max-w-7xl mx-auto px-4">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-6">{en.section_about}</h2>
-                <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">{en.about_body}</p>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-6">{he.section_about}</h2>
+                <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">{he.about_body}</p>
             </section>
 
             <section id="about-more" className="py-16 sm:py-24 max-w-7xl mx-auto px-4">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-6">{en.section_about_more}</h2>
-                <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                    {en.about_more_body}
-                </p>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-6">{he.section_about_more}</h2>
+                <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">{he.about_more_body}</p>
             </section>
 
             <section id="factory" className="py-16 sm:py-24 max-w-7xl mx-auto px-4">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-6">{en.section_factory}</h2>
-                <p className="text-zinc-700 dark:text-zinc-300 mb-4">{en.factory_hint}</p>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-6">{he.section_factory}</h2>
+                <p className="text-zinc-700 dark:text-zinc-300 mb-4">{he.factory_hint}</p>
                 <MemeFactory assets={CONFIG.assets} />
             </section>
 
             <section id="buy" className="py-16 sm:py-24 max-w-7xl mx-auto px-4">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-6">
-                    如何通过Four.meme在币安智能链（BSC）上购买代币
-                </h2>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-6">איך לקנות טוקן ב-Solana דרך pump.fun</h2>
                 <ol className="space-y-3 text-sm">
                     <li className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                        1) 安装MetaMask（桌面或手机端).
+                        1) התקינו ארנק Solana (למשל Phantom, Backpack, OKX).
                     </li>
                     <li className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                        2) 切换 BNB Smart Chain (BSC). 如果没有添加，请输入以下
-                        <br />• chainId: <code>56 (0x38)</code>
-                        <br />• rpcUrls: <code>https://bsc-dataseed.binance.org</code>
-                        <br />• chainName: <code>BNB Smart Chain</code>
-                        <br />• nativeCurrency: BNB (18 decimals)
-                        <br />• blockExplorerUrls: <code>https://bscscan.com</code>
+                        2) טענו מעט SOL (לקנייה ולעמלות רשת).
                     </li>
                     <li className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                        3) 给钱包充值少量BNB，用于支付交易手续费和兑换
-                    </li>
-                    <li className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                        4) 打开网址{" "}
+                        3) פתחו{" "}
                         <a
                             className="underline"
-                            href="https://four.meme/token/0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444"
+                            href={`https://pump.fun/coin/${CONFIG.token.contract}`}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            https://four.meme/token/0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444
+                            {`https://pump.fun/coin/${CONFIG.token.contract}`}
                         </a>
                         .
                     </li>
                     <li className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                        5) 核对显示的CA是否与four.meme中显示的一致。若系统提示，粘贴合约地址，仅在必要时设置滑点，然后确认兑换操作。
+                        4) אשרו שה-Mint (כתובת החוזה) תואם לזו שמופיעה כאן באתר, ואז לחצו Buy להמרה.
                     </li>
                     <li className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                        6) 购买后，使用相同合约地址将该代币添加到MetaMask中，便能查看余额.
+                        5) לאחר השלמת העסקה היתרה תופיע בארנק; אם צריך, הוסיפו ידנית את כתובת ה-Mint בארנק.
                     </li>
                 </ol>
-                <button
-                    onClick={async () => {
-                        const eth = (window as any).ethereum;
-                        if (!eth) {
-                            alert("MetaMask not found");
-                            return;
-                        }
-                        try {
-                            await eth.request({
-                                method: "wallet_addEthereumChain",
-                                params: [
-                                    {
-                                        chainId: "0x38",
-                                        chainName: "BNB Smart Chain",
-                                        nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
-                                        rpcUrls: ["https://bsc-dataseed.binance.org"],
-                                        blockExplorerUrls: ["https://bscscan.com"],
-                                    },
-                                ],
-                            });
-                        } catch (e) {
-                            console.error(e);
-                            alert("Could not add BSC. Open MetaMask and try manually.");
-                        }
-                    }}
-                    className="mt-6 px-4 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-sm"
-                >
-                    添加 BSC 到 MetaMask
-                </button>
-                <button
-                    onClick={async () => {
-                        const eth = (window as any).ethereum;
-                        if (!eth) {
-                            alert("MetaMask not found");
-                            return;
-                        }
-                        try {
-                            await eth.request({
-                                method: "wallet_watchAsset",
-                                params: {
-                                    type: "ERC20",
-                                    options: {
-                                        address: CONFIG.token.contract || "0xc1ee62ff1544bd0749b94e2fb9dea27ab6ec4444",
-                                        symbol: "CROC",
-                                        decimals: 18,
-                                        image: "/crocalor-32.png",
-                                    },
-                                },
-                            });
-                        } catch (e) {
-                            console.error(e);
-                            alert("Could not add CROC. Open MetaMask and try manually.");
-                        }
-                    }}
-                    className="mt-3 px-4 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-sm"
-                >
-                    添加 $CROC 到 MetaMask
-                </button>
             </section>
 
             <footer className="py-10 border-t border-zinc-200 dark:border-zinc-800 text-center text-sm">
-                {en.footer_rights}
+                {he.footer_rights}
             </footer>
         </div>
     );
