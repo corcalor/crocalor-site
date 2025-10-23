@@ -121,7 +121,9 @@ export default function MemesPage() {
                         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight">יצירות הקהילה</h1>
                         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
                             מבחר ממים ויצירות של קהילת Crocalor.
-                            המרה לממים עבריים בקרוב.
+                        </p>
+                        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                            Conversion to Hebrew memes coming soon.
                         </p>
                     </div>
                 </div>
