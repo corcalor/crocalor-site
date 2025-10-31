@@ -8,15 +8,15 @@ import Link from "next/link";
 
 const CONFIG = {
     token: {
-        name: "Crocalor",
+        name: "炙烫鳄",
         ticker: "$CROC",
         contract: "placeholder",
-        chain: "Solana",
+        chain: "Bitcoin",
     },
     socials: [
         { label: "X", href: "https://x.com/crocalor" },
-        { label: "PumpFun", href: "https://pump.fun/coin/placeholder" },
-        { label: "Telegram", href: "https://t.me/+UThyxyQgyAA3ZWFl" },
+        { label: "Luminex", href: "https://luminex.io/spark/trade/placeholder" },
+        
     ],
     hero: { videoUrl: "", poster: "/assets/crocalor-hero.png" },
     assets: [
@@ -34,29 +34,30 @@ const CONFIG = {
 };
 
 // Single source of truth for the market URL
-const PUMP_URL = `https://pump.fun/coin/${CONFIG.token.contract}`;
+const luminex_url = `https://luminex.io/spark/trade/${CONFIG.token.contract}`;
 
-const he = {
-    nav_market: "דף הבית",
-    nav_memes: "MEMES של הקהילה",
-    nav_factory: "מפעל הסטיקרים",
-    nav_about: "על Crocalor",
-    cta_buy: "קנו את Crocalor ב-pump.fun",
-    cta_copy: "העתק כתובת ה-CA",
-    copied: "הכתובת הועתקה!",
-    hero_title: "Crocalor — מלך הממים הלוהט",
+// English copy
+const en = {
+    nav_market: "Home",
+    nav_memes: "Community MEMES",
+    nav_factory: "Sticker Factory",
+    nav_about: "About Crocalor",
+    cta_buy: "Buy Crocalor on luminex.io",
+    cta_copy: "Copy Contract Address",
+    copied: "Contract copied!",
+    hero_title: "Crocalor — The Fiery Meme King",
     hero_tagline:
-        "בכוח האש הלוהט ובאנרגיית חיים שופעת, Crocalor בא לכבוש את Solana ולהראות לכולם מי הבוס.",
-    section_memes: "יצירות הקהילה",
-    section_factory: "מפעל הסטיקרים",
-    section_about: "על Crocalor",
+        "Fueled by blazing fire and overflowing vitality, Crocalor is here to conquer Bitcoin Network and show who's boss.",
+    section_memes: "Community Creations",
+    section_factory: "Sticker Factory",
+    section_about: "About Crocalor",
     about_body:
-        "Crocalor הוא פרויקט קריפטו קהילתי שמאמץ את תרבות הממים של האינטרנט. אנחנו מביאים לשרשרת את רוח ה'חום, הקצב והאבולוציה': בלי פלצנות — בדרך הכי כיפית שמאחדת אנשים ליצור, לשתף ולשחק בממים.",
-    section_about_more: "למה Crocalor",
+        "Crocalor is a community-driven crypto project that embraces internet meme culture. We bring the spirit of 'Heat, Rhythm, Evolution' on-chain: no pretension, just the most fun way to gather everyone to create, share, and play with memes.",
+    section_about_more: "Why Crocalor",
     about_more_body:
-        "סמל של חום: להבה מעל הראש ומקצב גבוה — התאמה טבעית לאופי של 'מם לוהט + גל חום'. אנרגיה מתפתחת: בשלב צמיחה, לא מושלם אבל חדור דחף — בדיוק כמו המסלול שבו מם קטן הופך לאש גדולה. ידידותי לשיתופי-יצירה: קל לעיבוד מחודש ולעיצוב, מתאים לבניית ספריית ממים ומערכת חזותית קהילתית.",
-    factory_hint: "צרו במהירות סטיקרים משלכם של Crocalor",
-    footer_rights: "נוצר באהבה על ידי קהילת Crocalor.",
+        "A symbol of heat: a flame-topped, high-tempo character—naturally fitting for a 'hot meme + heatwave' community vibe. Evolving energy: in a growth phase—imperfect but driven—mirroring how a small meme catches fire. Co-creation friendly: easy to remix and redesign, perfect for building a community meme library and visual system.",
+    factory_hint: "Quickly make your own Crocalor stickers",
+    footer_rights: "Made with ❤️ by the Crocalor community.",
 };
 
 // ✅ Shared CTA button style (matches the main buy button)
@@ -310,7 +311,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
             setBaseImg(img);
             draw();
         };
-        img.onerror = () => alert("לא ניתן לטעון את התמונה. נסו קובץ אחר.");
+        img.onerror = () => alert("Could not load that image. Try another file.");
     }
 
     function addSticker(src: string) {
@@ -445,7 +446,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
 
                             const vx0 = pt.x - info.L.x;
                             const vy0 = pt.y - info.L.y;
-                            const proj0 = vx0 * dirX + vy0 * dirY || 1;
+                            const proj0 = (vx0 * dirX + vy0 * dirY) || 1;
                             return { dirX, dirY, proj0, handleLen };
                         })(),
             };
@@ -457,7 +458,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                 return copy;
             });
             const scaleCursor = mode === "scale" ? resizeCursorForAngle(info.L.rot) : null;
-            c.style.cursor = mode === "move" ? "grabbing" : mode === "scale" ? scaleCursor! : "crosshair";
+            c.style.cursor = mode === "move" ? "grabbing" : mode === "scale" ? (scaleCursor as string) : "crosshair";
             return;
         }
 
@@ -639,12 +640,12 @@ function MemeFactory({ assets }: { assets: string[] }) {
                             onClick={() => fileInputRef.current?.click()}
                             className="px-4 py-2 rounded-xl bg-[#dd5f48] text-white hover:opacity-90 text-sm"
                         >
-                            העלה תמונה
+                            Upload Image
                         </button>
-                        {baseImg ? <span className="text-xs text-zinc-500">התמונה נטענה בהצלחה</span> : null}
+                        {baseImg ? <span className="text-xs text-zinc-500">Image loaded</span> : null}
                     </div>
 
-                    {/* Asset buttons (Next/Image to satisfy eslint) */}
+                    {/* Asset buttons */}
                     <div className="grid grid-cols-5 gap-2">
                         {assets.map((src, i) => (
                             <button
@@ -671,7 +672,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                 <div className="grid gap-3">
                     <div className="grid grid-cols-2 gap-3">
                         <label className="block">
-                            <span className="text-sm">טקסט עליון</span>
+                            <span className="text-sm">Top text</span>
                             <input
                                 value={topText}
                                 onChange={(e) => setTopText(e.target.value)}
@@ -680,18 +681,18 @@ function MemeFactory({ assets }: { assets: string[] }) {
                             />
                         </label>
                         <label className="block">
-                            <span className="text-sm">טקסט תחתון</span>
+                            <span className="text-sm">Bottom text</span>
                             <input
                                 value={bottomText}
                                 onChange={(e) => setBottomText(e.target.value)}
                                 className="mt-1 w-full rounded-lg border border-zinc-300 bg-transparent px-3 py-2"
-                                placeholder="אש על מקסימום"
+                                placeholder="Fire it up"
                             />
                         </label>
                     </div>
                     <div className="grid md:grid-cols-2 gap-3">
                         <label className="text-sm">
-                            גודל גופן עליון ({topFontPx}px)
+                            Top font size ({topFontPx}px)
                             <input
                                 type="range"
                                 min="12"
@@ -703,7 +704,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                             />
                         </label>
                         <label className="text-sm">
-                            גודל גופן תחתון ({bottomFontPx}px)
+                            Bottom font size ({bottomFontPx}px)
                             <input
                                 type="range"
                                 min="12"
@@ -715,12 +716,12 @@ function MemeFactory({ assets }: { assets: string[] }) {
                             />
                         </label>
                     </div>
-                    <p className="text-xs text-zinc-500">💡 טיפ: אפשר לגרור את הטקסט ישירות על הקנבס</p>
+                    <p className="text-xs text-zinc-500">💡 Tip: drag text directly on the canvas</p>
                 </div>
 
                 {/* Layer list & controls */}
                 <div className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                    <p className="text-sm mb-2">שכבות</p>
+                    <p className="text-sm mb-2">Stickers</p>
                     <div className="space-y-2 max-h-40 overflow-auto">
                         {layers.map((L) => (
                             <button
@@ -759,7 +760,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                                 </label>
                             </div>
                             <label className="text-sm">
-                                קנה מידה
+                                Scale
                                 <input
                                     type="range"
                                     min="0.1"
@@ -770,7 +771,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                                 />
                             </label>
                             <label className="text-sm">
-                                סיבוב
+                                Rotate
                                 <input
                                     type="range"
                                     min="-180"
@@ -788,13 +789,13 @@ function MemeFactory({ assets }: { assets: string[] }) {
                                 }}
                                 className="mt-1 px-3 py-2 rounded-lg border border-zinc-300 hover:bg-zinc-50 text-sm"
                             >
-                                היפוך אופקי
+                                Flip horizontally
                             </button>
                             <button
                                 onClick={removeSelected}
                                 className="mt-1 px-3 py-2 rounded-lg border border-zinc-300 hover:bg-zinc-50 text-sm"
                             >
-                                מחק פריט נבחר
+                                Delete selected
                             </button>
                         </div>
                     )}
@@ -810,7 +811,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                         }}
                         className="px-4 py-2 rounded-xl border border-zinc-300 hover:bg-zinc-50"
                     >
-                        נקה
+                        Clear
                     </button>
                     <button
                         onClick={() => {
@@ -823,7 +824,7 @@ function MemeFactory({ assets }: { assets: string[] }) {
                         }}
                         className="px-4 py-2 rounded-xl bg-[#dd5f48] text-white hover:opacity-90"
                     >
-                        הורד PNG
+                        Download PNG
                     </button>
                 </div>
             </div>
@@ -858,7 +859,7 @@ export default function CrocalorLanding() {
     async function copyCA() {
         const text = CONFIG.token.contract?.trim();
         if (!text || text.toLowerCase() === "placeholder") {
-            alert("כתובת ה-Mint עדיין לא הוגדרה. נסו מאוחר יותר.");
+            alert("Mint address is not set yet. Please try again later.");
             return;
         }
         try {
@@ -895,11 +896,7 @@ export default function CrocalorLanding() {
     }, [lbOpen, images.length]);
 
     return (
-        <div
-            dir="rtl"
-            lang="he"
-            className="min-h-screen bg-[radial-gradient(60%_40%_at_50%_0%,rgba(213,83,66,0.20),transparent),linear-gradient(to_bottom,white,white)] dark:bg-[radial-gradient(60%_40%_at_50%_0%,rgba(213,83,66,0.10),transparent),linear-gradient(to_bottom,#0a0a0a,#0a0a0a)] text-zinc-900 dark:text-zinc-100"
-        >
+        <div className="min-h-screen bg-[radial-gradient(60%_40%_at_50%_0%,rgba(213,83,66,0.20),transparent),linear-gradient(to_bottom,white,white)] dark:bg-[radial-gradient(60%_40%_at_50%_0%,rgba(213,83,66,0.10),transparent),linear-gradient(to_bottom,#0a0a0a,#0a0a0a)] text-zinc-900 dark:text-zinc-100">
             <header className="sticky top-0 z-30 backdrop-blur bg-white/70 dark:bg-zinc-900/60 border-b border-zinc-200/70 dark:border-zinc-800/70">
                 <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -919,14 +916,14 @@ export default function CrocalorLanding() {
                     </div>
                     {/* 🔴 Header nav items now styled as CTA buttons */}
                     <nav className="hidden sm:flex items-center gap-3">
-                        <Link href="/memes" className={BTN} aria-label={he.nav_memes}>
-                            {he.nav_memes}
+                        <Link href="/memes" className={BTN} aria-label={en.nav_memes}>
+                            {en.nav_memes}
                         </Link>
-                        <a href="#about" className={BTN} aria-label={he.nav_about}>
-                            {he.nav_about}
+                        <a href="#about" className={BTN} aria-label={en.nav_about}>
+                            {en.nav_about}
                         </a>
-                        <a href="#factory" className={BTN} aria-label={he.nav_factory}>
-                            {he.nav_factory}
+                        <a href="#factory" className={BTN} aria-label={en.nav_factory}>
+                            {en.nav_factory}
                         </a>
                     </nav>
                 </div>
@@ -939,7 +936,7 @@ export default function CrocalorLanding() {
                         <div className="order-first md:order-none">
                             <NextImage
                                 src={CONFIG.hero.poster || "/assets/crocalor-hero.png"}
-                                alt="Crocalor"
+                                alt="Crocalor (炙烫鳄)"
                                 width={1200}
                                 height={900}
                                 sizes="(min-width: 1024px) 720px, (min-width: 768px) 600px, 100vw"
@@ -956,18 +953,18 @@ export default function CrocalorLanding() {
                                     {CONFIG.token.ticker}
                                 </span>
                             </div>
-                            <h1 className="text-4xl sm:text-6xl font-extrabold leading-tight">{he.hero_title}</h1>
-                            <p className="text-lg text-zinc-700 dark:text-zinc-300">{he.hero_tagline}</p>
+                            <h1 className="text-4xl sm:text-6xl font-extrabold leading-tight">{en.hero_title}</h1>
+                            <p className="text-lg text-zinc-700 dark:text-zinc-300">{en.hero_tagline}</p>
                             <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                                <a href={PUMP_URL} target="_blank" rel="noopener noreferrer" className={BTN}>
-                                    {he.cta_buy}
+                                <a href={luminex_url} target="_blank" rel="noopener noreferrer" className={BTN}>
+                                    {en.cta_buy}
                                 </a>
                                 <button
                                     onClick={copyCA}
                                     className="px-5 py-3 rounded-xl bg-[#fceb96] text-black text-sm font-semibold hover:opacity-90"
-                                    aria-label={copied ? he.copied : he.cta_copy}
+                                    aria-label={copied ? en.copied : en.cta_copy}
                                 >
-                                    {copied ? he.copied : he.cta_copy}
+                                    {copied ? en.copied : en.cta_copy}
                                 </button>
                             </div>
                             <div className="flex flex-wrap gap-3 pt-2">
@@ -989,53 +986,53 @@ export default function CrocalorLanding() {
             </section>
 
             <section id="about" className="py-16 sm:py-24 max-w-7xl mx-auto px-4">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-6">{he.section_about}</h2>
-                <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">{he.about_body}</p>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-6">{en.section_about}</h2>
+                <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">{en.about_body}</p>
             </section>
 
             <section id="about-more" className="py-16 sm:py-24 max-w-7xl mx-auto px-4">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-6">{he.section_about_more}</h2>
-                <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">{he.about_more_body}</p>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-6">{en.section_about_more}</h2>
+                <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">{en.about_more_body}</p>
             </section>
 
             <section id="factory" className="py-16 sm:py-24 max-w-7xl mx-auto px-4">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-6">{he.section_factory}</h2>
-                <p className="text-zinc-700 dark:text-zinc-300 mb-4">{he.factory_hint}</p>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-6">{en.section_factory}</h2>
+                <p className="text-zinc-700 dark:text-zinc-300 mb-4">{en.factory_hint}</p>
                 <MemeFactory assets={CONFIG.assets} />
             </section>
 
             <section id="buy" className="py-16 sm:py-24 max-w-7xl mx-auto px-4">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-6">איך לקנות טוקן ב-Solana דרך pump.fun</h2>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-6">How to buy on Bitcoin via Luminex.io</h2>
                 <ol className="space-y-3 text-sm">
                     <li className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                        1) התקינו ארנק Solana (למשל Phantom, Backpack, OKX).
+                        1) Install a Spark Compatible wallet (e.g., Xverse, Bitbit or the built in Luminex Internal wallet).
                     </li>
                     <li className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                        2) טענו מעט SOL (לקנייה ולעמלות רשת).
+                        2) Fund a small amount of BTC (for purchase and network fees).
                     </li>
                     <li className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                        3) פתחו{" "}
+                        3) Open{' '}
                         <a
                             className="underline"
-                            href={`https://pump.fun/coin/${CONFIG.token.contract}`}
+                            href={luminex_url}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            {`https://pump.fun/coin/${CONFIG.token.contract}`}
+                            {luminex_url}
                         </a>
                         .
                     </li>
                     <li className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                        4) אשרו שה-Mint (כתובת החוזה) תואם לזו שמופיעה כאן באתר, ואז לחצו Buy להמרה.
+                        4) Verify the displayed Mint (contract address) matches this site, then click Buy.
                     </li>
                     <li className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                        5) לאחר השלמת העסקה היתרה תופיע בארנק; אם צריך, הוסיפו ידנית את כתובת ה-Mint בארנק.
+                        5) After the swap, your balance will appear in the wallet; if needed, add the Mint address manually.
                     </li>
                 </ol>
             </section>
 
             <footer className="py-10 border-t border-zinc-200 dark:border-zinc-800 text-center text-sm">
-                {he.footer_rights}
+                {en.footer_rights}
             </footer>
         </div>
     );

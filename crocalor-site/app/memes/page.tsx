@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import NextImage from "next/image";
 import Link from "next/link";
 
-// עמוד גלריה קהילתית (עצמאי)
-// אם תרצו מקור אחד משותף, העבירו את GALLERY לקובץ קונפיג משותף וייבאו אותו כאן.
+// Simple standalone page for the community gallery
+// If you prefer a single source of truth, move GALLERY to a shared config file and import it here.
 const GALLERY = [
     "/memes/1.png",
     "/memes/3.png",
@@ -97,20 +97,14 @@ export default function MemesPage() {
     }, [lbOpen]);
 
     return (
-        <div
-            dir="rtl"
-            lang="he"
-            className="min-h-screen bg-[radial-gradient(60%_40%_at_50%_0%,rgba(213,83,66,0.20),transparent),linear-gradient(to_bottom,white,white)] dark:bg-[radial-gradient(60%_40%_at_50%_0%,rgba(213,83,66,0.10),transparent),linear-gradient(to_bottom,#0a0a0a,#0a0a0a)] text-zinc-900 dark:text-zinc-100"
-        >
+        <div className="min-h-screen bg-[radial-gradient(60%_40%_at_50%_0%,rgba(213,83,66,0.20),transparent),linear-gradient(to_bottom,white,white)] dark:bg-[radial-gradient(60%_40%_at_50%_0%,rgba(213,83,66,0.10),transparent),linear-gradient(to_bottom,#0a0a0a,#0a0a0a)] text-zinc-900 dark:text-zinc-100">
             <header className="sticky top-0 z-30 backdrop-blur bg-white/70 dark:bg-zinc-900/60 border-b border-zinc-200/70 dark:border-zinc-800/70">
                 <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <Link href="/" className="text-sm text-zinc-600 dark:text-zinc-300 hover:underline">
-                            ← חזרה לדף הבית
-                        </Link>
+                        <Link href="/" className="text-sm text-zinc-600 dark:text-zinc-300 hover:underline">← Back to Home</Link>
                     </div>
                     <nav className="hidden sm:flex items-center gap-6 text-sm">
-                        <Link href="/">דף הבית</Link>
+                        <Link href="/">Home</Link>
                     </nav>
                 </div>
             </header>
@@ -118,13 +112,8 @@ export default function MemesPage() {
             <main className="max-w-7xl mx-auto px-4 py-12 sm:py-20">
                 <div className="flex items-end justify-between gap-4 mb-8">
                     <div>
-                        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight">יצירות הקהילה</h1>
-                        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                            מבחר ממים ויצירות של קהילת Crocalor.
-                        </p>
-                        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                            Conversion to Hebrew memes coming soon.
-                        </p>
+                        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight">Community Gallery</h1>
+                        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">A curated selection of Crocalor memes and creations from the community.</p>
                     </div>
                 </div>
 
@@ -133,22 +122,20 @@ export default function MemesPage() {
                         {GALLERY.map((src, i) => (
                             <button
                                 key={i}
-                                onClick={() => {
-                                    setLbIndex(i);
-                                    setLbOpen(true);
-                                }}
+                                onClick={() => { setLbIndex(i); setLbOpen(true); }}
                                 className="group relative rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden focus:outline-none focus:ring-2 focus:ring-[#dd5f48]"
-                                aria-label={`פתח תמונה ${i + 1}`}
+                                aria-label={`Open image ${i + 1}`}
                             >
                                 <div className="relative aspect-[4/3] w-full bg-white/60 dark:bg-zinc-900/60">
                                     <NextImage
                                         src={src}
-                                        alt={`מם קהילתי ${i + 1}`}
+                                        alt={`community meme ${i + 1}`}
                                         fill
                                         loading="lazy"
                                         priority={false}
                                         sizes="(min-width:1200px) 160px, (min-width:768px) 22vw, 45vw"
                                         className="object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+                                        // contain avoids cropping weirdness
                                         style={{ imageOrientation: "from-image" }}
                                         quality={70}
                                     />
@@ -157,12 +144,10 @@ export default function MemesPage() {
                         ))}
                     </div>
                 ) : (
-                    <p className="text-sm text-zinc-500">
-                        אין תוכן כרגע. אנא שימו תמונות בתיקייה ‎/public/memes‎ ועדכנו את GALLERY.
-                    </p>
+                    <p className="text-sm text-zinc-500">No items yet. Please put images in /public/memes and update GALLERY.</p>
                 )}
 
-                {/* חלון תצוגה (Lightbox) */}
+                {/* Lightbox modal */}
                 {lbOpen && GALLERY.length > 0 && (
                     <div
                         className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
@@ -171,7 +156,7 @@ export default function MemesPage() {
                         <div className="relative max-w-6xl w-full" onClick={(e) => e.stopPropagation()}>
                             <NextImage
                                 src={GALLERY[lbIndex]}
-                                alt={`תצוגה מקדימה ${lbIndex + 1}`}
+                                alt={`preview ${lbIndex + 1}`}
                                 width={1280}
                                 height={853}
                                 className="w-full h-auto rounded-xl shadow-2xl object-contain"
@@ -180,7 +165,7 @@ export default function MemesPage() {
                             <button
                                 onClick={() => setLbOpen(false)}
                                 className="absolute top-3 right-3 rounded-full bg-black/60 text-white px-3 py-2 text-sm"
-                                aria-label="סגור"
+                                aria-label="Close"
                             >
                                 ✕
                             </button>
@@ -189,14 +174,14 @@ export default function MemesPage() {
                                     <button
                                         onClick={() => setLbIndex((i) => (i - 1 + GALLERY.length) % GALLERY.length)}
                                         className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 text-white px-3 py-2 text-sm"
-                                        aria-label="הקודם"
+                                        aria-label="Previous"
                                     >
                                         ‹
                                     </button>
                                     <button
                                         onClick={() => setLbIndex((i) => (i + 1) % GALLERY.length)}
                                         className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 text-white px-3 py-2 text-sm"
-                                        aria-label="הבא"
+                                        aria-label="Next"
                                     >
                                         ›
                                     </button>
@@ -207,9 +192,7 @@ export default function MemesPage() {
                 )}
             </main>
 
-            <footer className="py-10 border-t border-zinc-200 dark:border-zinc-800 text-center text-sm">
-                נוצר באהבה על ידי קהילת Crocalor.
-            </footer>
+            <footer className="py-10 border-t border-zinc-200 dark:border-zinc-800 text-center text-sm">Made with ❤️ by the Crocalor community.</footer>
         </div>
     );
 }
